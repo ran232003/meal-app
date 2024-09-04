@@ -13,11 +13,9 @@ const MealDetails = (props) => {
   //     state.favorite.favorites;
   //   });
   const { favorites, setFavorites } = props;
-  const id = favorites.find((id) => id === meal.id);
+  const id = favorites.find((mealItem) => mealItem.id === meal.id);
 
-  const [iconColor, setIconColor] = useState(
-    favorites.includes(meal.id) ? "red" : "black"
-  ); // Initial color is black
+  const [iconColor, setIconColor] = useState(id ? "red" : "black"); // Initial color is black
   console.log(id, "id", iconColor);
   // Extract the parameters from route.params
 
@@ -25,14 +23,14 @@ const MealDetails = (props) => {
   const navigation = useNavigation();
 
   const handleFavoriteToggle = () => {
-    console.log(favorites.includes(meal.id));
-    if (favorites.includes(meal.id)) {
+    const id = favorites.find((mealItem) => mealItem.id === meal.id);
+    if (id) {
       console.log("if yes remove");
-      setFavorites(favorites.filter((favId) => favId !== meal.id));
+      setFavorites(favorites.filter((mealItem) => mealItem.id !== meal.id));
       setIconColor("black");
     } else {
       console.log("else add");
-      setFavorites([...favorites, meal.id]);
+      setFavorites([...favorites, meal]);
       setIconColor("red");
     }
   };

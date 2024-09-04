@@ -10,10 +10,37 @@ import { NavigationContainer } from "@react-navigation/native";
 import Meals from "./screens/Meals";
 import MealDetails from "./screens/MealDetails";
 import { useState } from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Favorites from "./screens/Favorites";
 
 export default function App() {
   const [favorites, setFavorites] = useState([]);
   const Stack = createNativeStackNavigator();
+  //nested navigation
+  const Drawer = createDrawerNavigator();
+
+  function MyDrawer() {
+    return (
+      <Drawer.Navigator
+        screenOptions={{
+          sceneContainerStyle: { backgroundColor: "#3f2f25" },
+          drawerContentStyle: { backgroundColor: "#FFDBB5" },
+          drawerActiveBackgroundColor: { backgroundColor: "#3f2f25" },
+        }}
+      >
+        <Drawer.Screen name="Home" component={Categories} />
+        <Drawer.Screen name="Favorites">
+          {(props) => (
+            <Favorites
+              {...props}
+              favorites={favorites}
+              setFavorites={setFavorites}
+            />
+          )}
+        </Drawer.Screen>
+      </Drawer.Navigator>
+    );
+  }
 
   return (
     <Provider store={store}>
@@ -22,7 +49,13 @@ export default function App() {
           <NavigationContainer>
             {/* <AppBarrComp /> */}
             <Stack.Navigator initialRouteName="Home">
-              <Stack.Screen name="Home" component={Categories} />
+              {/* <Stack.Screen name="Home" component={Categories} /> */}
+              {/* nested nav */}
+              <Stack.Screen
+                name="Drawer"
+                component={MyDrawer}
+                options={{ headerShown: false }}
+              />
               <Stack.Screen name="Meals" component={Meals} />
               {/* <Stack.Screen
                 name="MealDetails"
